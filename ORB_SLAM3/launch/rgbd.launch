@@ -1,0 +1,23 @@
+<launch>
+    <!-- <param name="/use_sim_time" value="true"/>  -->
+
+    <arg name="voc_dir" default="/home/joe/Documents/ORB_SLAM3/Vocabulary/ORBvoc.txt"/>
+    <arg name="yaml_dir" default="/home/joe/Documents/ORB_SLAM3/Examples/ROS/ORB_SLAM3/d435i.yaml"/>
+    <!-- <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+        <param name="video_device" value="/dev/video0" />
+        <param name="image_width" value="640" />
+        <param name="image_height" value="480" />
+        <param name="pixel_format" value="yuyv" />
+        <param name="camera_frame_id" value="usb_cam" />
+        <param name="io_method" value="mmap"/>
+      </node> -->
+
+    <node name="RGBD_ros" pkg="orb_slam3" type="RGBD_ros" 
+        args="$(arg voc_dir) $(arg yaml_dir)" output="screen">
+        <remap from="/camera/rgb/image_raw" to="/camera/color/image_raw"/> 
+
+        <remap from="/camera/depth_registered/image_raw" to="/camera/depth/image_rect_raw"/>
+
+    </node>
+
+</launch>

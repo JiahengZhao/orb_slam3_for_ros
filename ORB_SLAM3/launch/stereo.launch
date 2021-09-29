@@ -1,0 +1,24 @@
+<launch>
+    <!-- <param name="/use_sim_time" value="true"/>  -->
+
+    <arg name="voc_dir" default="/home/joe/Documents/ORB_SLAM3/Vocabulary/ORBvoc.txt"/>
+    <!-- <arg name="yaml_dir" default="/home/joe/Documents/ORB_SLAM3/Examples/Stereo/TUM_512.yaml"/> -->
+    <arg name="yaml_dir" default="/home/joe/Documents/ORB_SLAM3/Examples/Stereo-Inertial/EuRoC.yaml"/>
+    <!-- <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+        <param name="video_device" value="/dev/video0" />
+        <param name="image_width" value="640" />
+        <param name="image_height" value="480" />
+        <param name="pixel_format" value="yuyv" />
+        <param name="camera_frame_id" value="usb_cam" />
+        <param name="io_method" value="mmap"/>
+      </node> -->
+
+    <node name="Stereo" pkg="ORB_SLAM3" type="Stereo" 
+        args="$(arg voc_dir) $(arg yaml_dir) true" output="screen">
+        <!-- <remap from="/camera/image_raw" to="/usb_cam/image_raw"/> -->
+        <remap from="/camera/left/image_raw" to="/cam0/image_raw"/>
+        <remap from="/camera/right/image_raw" to="/cam1/image_raw"/>
+    </node>
+
+
+</launch>

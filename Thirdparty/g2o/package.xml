@@ -1,0 +1,21 @@
+<package format="2">
+  <name>g2o</name>
+  <version>1.0.0</version>
+  <description>
+    Migrating DBoW2 from Rosbuild to Catkin.
+  </description>
+  <maintainer email="zhaojiaheng91@outlook.com">
+    Jiaheng Zhao
+  </maintainer>
+  <license>Apache 2.0</license>
+
+
+  <buildtool_depend>cmake</buildtool_depend>
+
+  <depend>eigen</depend>
+  
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+
+</package>

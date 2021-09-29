@@ -1,0 +1,41 @@
+<package format="2">
+  <name>orb_slam3</name>
+  <version>1.0.0</version>
+  <description>
+    Migrating ORB_SLAM3 from Rosbuild to Catkin.
+  </description>
+  <maintainer email="zhaojiaheng91@outlook.com">
+    Jiaheng Zhao
+  </maintainer>
+  <license>Apache 2.0</license>
+
+  <!-- <url>https://github.com/cartographer-project/cartographer_ros</url> -->
+
+  <author>
+    Carlos Campos, Richard Elvira, Juan J. Gomez, Jose M.M. Montiel, Juan D. Tardos
+  </author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- <depend version_gte="1.0.0">cartographer</depend> -->
+  <!-- <depend version_gte="1.0.0">cartographer_ros_msgs</depend> -->
+  <!-- <depend>geometry_msgs</depend> -->
+  <!-- <depend>libgflags-dev</depend>
+  <depend>libgoogle-glog-dev</depend>
+  <depend>libpcl-all-dev</depend> -->
+  <depend>message_runtime</depend>
+  <depend>message_filters</depend>
+  <!-- <depend>nav_msgs</depend> -->
+  <!-- <depend>pcl_conversions</depend> -->
+  <!-- <depend>robot_state_publisher</depend> -->
+  <depend>rosbag</depend>
+  <depend>roscpp</depend>
+  <depend>roslaunch</depend>
+  <depend>roslib</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>tf</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+
+</package>
