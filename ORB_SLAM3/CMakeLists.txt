@@ -95,8 +95,6 @@ catkin_package(
  DEPENDS EIGEN3 Boost
 )
 
-
-
 include_directories(
 ${PROJECT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}/include
@@ -105,21 +103,43 @@ ${EIGEN3_INCLUDE_DIR}
 ${Pangolin_INCLUDE_DIRS}
 ${PROJECT_SOURCE_DIR}/../Thirdparty/
 ${catkin_INCLUDE_DIRS}
-# ${PROJECT_SOURCE_DIR}/../Thirdparty/g2o
 )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
-set(SRC_TO_REMOVE "${PROJECT_SOURCE_DIR}/src/PnPsolver.cc;
-                ${PROJECT_SOURCE_DIR}/include/ORBVocabulary.h;
-                ${PROJECT_SOURCE_DIR}/include/PnPsolver.h;
-                ${PROJECT_SOURCE_DIR}/src/ros_*.cc;
-                ${PROJECT_SOURCE_DIR}/src/AR/*.*")
-# message("SRC_TO_REMOVE:" ${SRC_TO_REMOVE})
+# set(SRC_TO_REMOVE "${PROJECT_SOURCE_DIR}/src/PnPsolver.cc;
+# ${PROJECT_SOURCE_DIR}/include/ORBVocabulary.h;
+# ${PROJECT_SOURCE_DIR}/include/PnPsolver.h;
+# ${PROJECT_SOURCE_DIR}/src/ros_mono_inertial.cc;
+# ${PROJECT_SOURCE_DIR}/src/ros_mono.cc;
+# ${PROJECT_SOURCE_DIR}/src/ros_rgbd copy.cc;
+# ${PROJECT_SOURCE_DIR}/src/ros_rgbd.cc;
+# ${PROJECT_SOURCE_DIR}/src/ros_stereo_inertial.cc;
+# ${PROJECT_SOURCE_DIR}/src/ros_stereo.cc;
+# ${PROJECT_SOURCE_DIR}/src/AR/ros_mono_ar.cc;
+# ${PROJECT_SOURCE_DIR}/src/AR/ViewerAR.h;
+# ${PROJECT_SOURCE_DIR}/src/AR/ViewerAR.cc;")
 file(GLOB_RECURSE ALL_SRCS "${PROJECT_SOURCE_DIR}/src/*.cc"
                      "${PROJECT_SOURCE_DIR}/src/*.cpp")
+message("ALL_SRCS:" ${ALL_SRCS})
+
+file(GLOB_RECURSE SRC_TO_REMOVE "${PROJECT_SOURCE_DIR}/src/PnPsolver.cc"
+"${PROJECT_SOURCE_DIR}/include/ORBVocabulary.h"
+"${PROJECT_SOURCE_DIR}/include/PnPsolver.h"
+"${PROJECT_SOURCE_DIR}/src/ros_*.cc"
+# ${PROJECT_SOURCE_DIR}/src/ros_mono.cc;
+# ${PROJECT_SOURCE_DIR}/src/ros_rgbd copy.cc;
+# ${PROJECT_SOURCE_DIR}/src/ros_rgbd.cc;
+# ${PROJECT_SOURCE_DIR}/src/ros_stereo_inertial.cc;
+# ${PROJECT_SOURCE_DIR}/src/ros_stereo.cc;
+"${PROJECT_SOURCE_DIR}/src/AR/*.cc"
+# ${PROJECT_SOURCE_DIR}/src/AR/ViewerAR.h;
+# ${PROJECT_SOURCE_DIR}/src/AR/ViewerAR.cc;")
+)
+message("SRC_TO_REMOVE:" ${SRC_TO_REMOVE})
+
 list(REMOVE_ITEM ALL_SRCS ${SRC_TO_REMOVE})
-# message("Remove ALL_SRCS:" ${ALL_SRCS})
+message("After Remove ALL_SRCS:" ${ALL_SRCS})
 add_library(${PROJECT_NAME} SHARED ${ALL_SRCS})
 
 # list(APPEND ${PROJECT_NAME} ${g2o_LIBRARY} ${DBoW2_LIBRARY})
@@ -182,19 +202,6 @@ add_library(${PROJECT_NAME} SHARED ${ALL_SRCS})
 # include/CameraModels/KannalaBrandt8.h
 # include/CameraModels/Pinhole.h
 # )
-
-# add_subdirectory(Thirdparty/g2o)
-set(LIBS ${PROJECT_NAME} 
-${OpenCV_LIBS}
-${EIGEN3_LIBS}
-${Pangolin_LIBRARIES}
-${g2o_LIBRARY} 
-${DBoW2_LIBRARY}
--lboost_serialization
--lcrypto
-${catkin_LIBRARIES}
-# -lboost_system
-)
 
 target_link_libraries(${PROJECT_NAME}
 ${OpenCV_LIBS}
@@ -275,17 +282,41 @@ target_link_libraries(rgbd_tum ${PROJECT_NAME})
 # Examples/Stereo-Inertial/stereo_inertial_tum_vi.cc)
 # target_link_libraries(stereo_inertial_tum_vi ${PROJECT_NAME})
 
+# Node for monocular camera
+add_executable(Mono_ros src/ros_mono.cc)
+target_link_libraries(Mono_ros ${PROJECT_NAME})
 
-# add_executable(RGBD_ros src/ros_rgbd.cc)
+# Node for RGB-D camera
 add_executable(RGBD_ros src/ros_rgbd.cc)
 target_link_libraries(RGBD_ros ${PROJECT_NAME})
-# target_link_libraries(RGBD_ros ${LIBS})
 
+
+# Node for monocular camera (Augmented Reality Demo)
+add_executable(MonoAR_ros
+src/AR/ros_mono_ar.cc
+src/AR/ViewerAR.h
+src/AR/ViewerAR.cc)
+target_link_libraries(MonoAR_ros ${PROJECT_NAME})
+
+# Node for stereo camera
+add_executable(Stereo_ros src/ros_stereo.cc)
+target_link_libraries(Stereo_ros ${PROJECT_NAME})
+
+
+# Node for monocular-inertial camera
+add_executable(Mono_Inertial_ros
+src/ros_mono_inertial.cc)
+target_link_libraries(Mono_Inertial_ros ${PROJECT_NAME})
+
+# Node for stereo-inertial camera
+add_executable(Stereo_Inertial_ros
+src/ros_stereo_inertial.cc)
+target_link_libraries(Stereo_Inertial_ros ${PROJECT_NAME})
 
 install(DIRECTORY launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
 install(TARGETS RGBD_ros ${PROJECT_NAME}
-RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+RUNTIME DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/bin
 LIBRARY DESTINATION lib)

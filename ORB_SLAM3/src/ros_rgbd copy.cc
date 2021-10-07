@@ -30,7 +30,7 @@
 
 #include<opencv2/core/core.hpp>
 
-#include"../../../include/System.h"
+#include"../../include/System.h"
 
 using namespace std;
 

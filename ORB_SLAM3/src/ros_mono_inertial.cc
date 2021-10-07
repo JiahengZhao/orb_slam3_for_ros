@@ -31,7 +31,7 @@
 
 #include<opencv2/core/core.hpp>
 
-#include"../../../include/System.h"
+#include"../../include/System.h"
 #include"../include/ImuTypes.h"
 
 using namespace std;
